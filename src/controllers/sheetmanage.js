@@ -1290,6 +1290,28 @@ const sheetmanage = {
                 $("#luckysheet-grid-window-1").append(luckysheetlodingHTML());
 
                 let sheetindex = _this.checkLoadSheetIndex(file);
+// console.log('there...');
+//                 $.ajax({
+//                   type: 'POST',
+//                   url: loadSheetUrl,
+//                   data: {"gridKey" : server.gridKey, "index": sheetindex.join(",")},
+//                   beforeSend: function(XMLHttpRequest)
+//                   {
+                    
+//                     //Download progress
+//                     XMLHttpRequest.addEventListener("progress", function(evt){
+//                       if (evt.lengthComputable) {  
+//                         var percentComplete = evt.loaded / evt.total;
+//                         $('#loadingProgress').html(percentComplete);
+//                         console.log('here...',percentComplete);
+//                         //Do something with download progress
+//                       }
+//                     }, false); 
+//                   },
+//                   success: function(d){
+                    
+//                   }
+//                 });
                 
                 $.post(loadSheetUrl, {"gridKey" : server.gridKey, "index": sheetindex.join(",")}, function (d) {
                     let dataset = new Function("return " + d)();
@@ -1300,19 +1322,19 @@ const sheetmanage = {
                         Store.loadingObj.close()
                     }, 500);
 
-                    for(let item in dataset){
-                        if(item == index){
-                            continue;
-                        }
+                    // for(let item in dataset){
+                    //     if(item == index){
+                    //         continue;
+                    //     }
 
-                        let otherfile = Store.luckysheetfile[_this.getSheetIndex(item)];
+                    //     let otherfile = Store.luckysheetfile[_this.getSheetIndex(item)];
                         
-                        if(otherfile["load"] == null || otherfile["load"] == "0"){
-                            otherfile.celldata = dataset[item.toString()];
-                            otherfile["data"] = _this.buildGridData(otherfile);
-                            otherfile["load"] = "1";
-                        }
-                    }
+                    //     if(otherfile["load"] == null || otherfile["load"] == "0"){
+                    //         otherfile.celldata = dataset[item.toString()];
+                    //         otherfile["data"] = _this.buildGridData(otherfile);
+                    //         otherfile["load"] = "1";
+                    //     }
+                    // }
 
                     file["data"] = data;
                     file["load"] = "1";
@@ -1325,6 +1347,7 @@ const sheetmanage = {
                         formula.execFunctionGroupForce(luckysheetConfigsetting.forceCalculation);
                         _this.restoreSheetAll(Store.currentSheetIndex);
                         luckysheetrefreshgrid();
+                        method.createHookFunction('sheetActivateAfter', index, isPivotInitial, isNewSheet);
                     }, 1);
 
                     server.saveParam("shs", null, Store.currentSheetIndex);
@@ -1337,9 +1360,10 @@ const sheetmanage = {
 
         //隐藏其他sheet的图表，显示当前sheet的图表 chartMix
         renderChartShow(index);
-        
+
         luckysheetFreezen.initialFreezen(index);
         _this.restoreselect();
+        
     },
     checkLoadSheetIndexToDataIndex:{},
     checkLoadSheetIndex: function(file) {

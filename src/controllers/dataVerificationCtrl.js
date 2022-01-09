@@ -263,6 +263,7 @@ const dataVerificationCtrl = {
         $(document).off("click.dropdownListItem").on("click.dropdownListItem", "#luckysheet-dataVerification-dropdown-List .dropdown-List-item", function(e) {
             var $item = $(this);
             let value = e.target.innerText;
+
             if ($item.hasClass('multi')) {
                 $item.toggleClass('checked');
                 value = $.map($("#luckysheet-dataVerification-dropdown-List").children().filter('.checked'), function(el) {
@@ -1531,15 +1532,24 @@ const dataVerificationCtrl = {
             'left': col_pre,
             'top': row,
         });
+        $('.luckysheet-cell-input').keyup(function(e){
+
+            $('.dropdown-List-item').show();
+            $(".dropdown-List-item").filter(function() {
+                return $(this).text().indexOf($('.luckysheet-cell-input').text()) === -1;
+            }).hide();
+            
+        });
+       
 
         let myh = $("#luckysheet-dataVerification-dropdown-List").outerHeight();
         let currentWinH = $("#luckysheet-cell-main")[0].scrollHeight;
 
-        if(row + myh > currentWinH - 42 - 6){
-            $("#luckysheet-dataVerification-dropdown-List").css({
-                'top': row_pre - myh,
-            })
-        }
+        // if(row + myh > currentWinH - 42 - 6){
+        //     $("#luckysheet-dataVerification-dropdown-List").css({
+        //         'top': row_pre - myh,
+        //     })
+        // }
     },
     getDropdownList: function(txt){
         let list = [];

@@ -122,10 +122,13 @@ export function setCellValue(row, column, value, options = {}) {
     }
 
     /* cell更新前触发  */
-    if (!method.createHookFunction("cellUpdateBefore", row, column, value, isRefresh)) {
+    let hook = method.createHookFunction("cellUpdateBefore", row, column, value, isRefresh);
+    if (!hook) {
         /* 如果cellUpdateBefore函数返回false 则不执行后续的更新 */
         return;
     }
+    console.log('hook', hook);
+    value = hook;
 
     let data = file.data;
     if(isRefresh) {

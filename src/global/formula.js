@@ -1311,11 +1311,14 @@ const luckysheetformula = {
         // API, we get value from user
         value = value || $input.text();
 
+        hook = method.createHookFunction("cellUpdateBefore", r, c, value, isRefresh);
         // Hook function
-        if (!method.createHookFunction("cellUpdateBefore", r, c, value, isRefresh)) {
+        if (!hook) {
             _this.cancelNormalSelected();
             return;
         }
+
+        value = hook;
 
         if (!isCurInline) {
             if (isRealNull(value) && !isPrevInline) {
@@ -1346,6 +1349,7 @@ const luckysheetformula = {
                 }
             }
         }
+        console.log('here1.1');
 
         window.luckysheet_getcelldata_cache = null;
 
@@ -1551,7 +1555,6 @@ const luckysheetformula = {
                 isRunExecFunction = false;
             }
         }
-
         // value maybe an object
         setcellvalue(r, c, d, value);
         _this.cancelNormalSelected();
@@ -1642,7 +1645,8 @@ const luckysheetformula = {
         }
 
         setTimeout(() => {
-            // Hook function
+            // Hook functio
+
             method.createHookFunction("cellUpdated", r, c, JSON.parse(oldValue), Store.flowdata[r][c], isRefresh);
         }, 0);
 

@@ -118,7 +118,7 @@ const gridHTML = function(){
                                                         <div class="luckysheet-selection-copy-hc"></div>
                                                     </div>  
                                                     <div class="luckysheet-row-count-show luckysheet-count-show" id="luckysheet-row-count-show"></div>
-                                                    <div class="luckysheet-column-count-show luckysheet-count-show" id="luckysheet-column-count-show"></div>
+                                                    <!--<div class="luckysheet-column-count-show luckysheet-count-show" id="luckysheet-column-count-show"></div>-->
                                                     <div class="luckysheet-change-size-line" id="luckysheet-change-size-line"></div>  
                                                     <div class="luckysheet-cell-selected-focus" id="luckysheet-cell-selected-focus"></div>  
                                                     <div id="luckysheet-selection-copy"></div>  
@@ -842,7 +842,7 @@ function customLoadingConfig() {
     const info = _locale.info;
     const config = {
         enable: true,
-        image: 'image://css/loading.gif',
+        image: 'image:///css/loading.gif',
         text: info.loading,
         viewBox: "32 32 64 64", // 只有为path时，才会使用
         imageClass: '',
@@ -903,14 +903,14 @@ const luckysheetlodingHTML = function (target, coverConfig) {
         }
     }
     const imageHtml = luckysheetloadingImage(config);
-    const id = "luckysheet-loading-" + uuid.v4();
+    const id = "luckysheet-loading-1";
     const loadingHtml = `
         <div class="luckysheet-loading-content"> 
             <div class="${config.imageClass} luckysheet-loading-image">
                 ${imageHtml}
             </div>
             <div class="${config.textClass} luckysheet-loading-text">
-            <span>${config.text}</span>
+            <span>${config.text} (<span id="loadingProgress">0</span>%) </span>
             </div>    
         </div>`;
     const loading = document.createElement("div");

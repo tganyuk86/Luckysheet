@@ -56,7 +56,7 @@ export default {
     rowHeaderWidth: 46,
     columnHeaderHeight: 20,
     defaultColWidth:73,
-    defaultRowHeight:19,
+    defaultRowHeight:27,
     defaultFontSize:10,
     limitSheetNameLength:true,    //是否限制工作表名的长度
     defaultSheetNameMaxLength:31,  //默认工作表名称的最大长度

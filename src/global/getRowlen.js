@@ -1242,7 +1242,10 @@ function getCellTextInfo(cell , ctx, option){
                     wordCount: maxWordCount
                 });
             }
-            // console.log(textH_all,textW_all,textW_all_inner);
+            if(splitLen == 0){
+            console.log('word!',textH_all,textW_all,textW_all_inner,split_all_size,splitLen);
+// return;
+            }
             // let cumColumnWidth = 0;
             let cumWordHeight = 0,cumColumnWidth = 0;
             let rtPI = rt*Math.PI/180;

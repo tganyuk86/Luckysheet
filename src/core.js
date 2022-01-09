@@ -173,19 +173,52 @@ luckysheet.create = function (setting) {
         initialWorkBook();
     }
     else {
-        $.post(loadurl, {"gridKey" : server.gridKey}, function (d) {
-            let data = new Function("return " + d)();
-            Store.luckysheetfile = data;
+        // console.log('start loading...');
+        $.ajax({
+              xhr: function()
+              {
+                // console.log('xhr init...');
+                var xhr = new window.XMLHttpRequest();
+                //Upload progress
+                // xhr.upload.addEventListener("progress", function(evt){
+                //   if (evt.lengthComputable) {
+                //     var percentComplete = evt.loaded / evt.total;
+                //     //Do something with upload progress
+                //     console.log(percentComplete);
+                //   }
+                // }, false);
+                //Download progress
+                xhr.addEventListener("progress", function(evt){
+                  if (evt.lengthComputable) {
+                    var percentComplete = Math.round(evt.loaded / evt.total * 100);
+                    $('#loadingProgress').html(percentComplete);
+                    //Do something with download progress
+                    console.log(percentComplete);
+                  }
+                  console.log('no evt?', evt);
+                }, false);
+                return xhr;
+              },
+              type: 'POST',
+              url: loadurl,
+              data: {"gridKey" : server.gridKey},
+              success: function(d){
+                let data = new Function("return " + d)();
+                Store.luckysheetfile = data;
 
-            sheetmanage.initialjfFile(menu, title);
-            // luckysheetsizeauto();
-            initialWorkBook();
+                sheetmanage.initialjfFile(menu, title);
+                // luckysheetsizeauto();
+                initialWorkBook();
 
-            //需要更新数据给后台时，建立WebSocket连接
-            if(server.allowUpdate){
-                server.openWebSocket();
-            }
-        });
+                //需要更新数据给后台时，建立WebSocket连接
+                if(server.allowUpdate){
+                    server.openWebSocket();
+                }
+              }
+            });
+        // $.post(loadurl, {"gridKey" : server.gridKey}, function (d) {
+            
+        // });
     }
 }
 

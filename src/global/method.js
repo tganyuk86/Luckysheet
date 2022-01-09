@@ -514,14 +514,18 @@ const method = {
      */
     createHookFunction:function(){
         let hookName = arguments[0];
+// console.log('hookName:',hookName);
         if(luckysheetConfigsetting.hook && luckysheetConfigsetting.hook[hookName]!=null && (typeof luckysheetConfigsetting.hook[hookName] == "function")){
             var args = Array.prototype.slice.apply(arguments);
             args.shift();
             let ret = luckysheetConfigsetting.hook[hookName].apply(this, args);
+            if(hookName == 'cellUpdateBefore')
+                return ret;
             if(ret===false){
                 return false;
             }
             else{
+// console.log('Ret:',ret);
                 return true;
             }
         }
